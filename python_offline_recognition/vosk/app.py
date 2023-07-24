@@ -4,7 +4,7 @@ from jsonpath_ng import jsonpath, parse
 import json
 import sys
 
-model = Model(r"vosk-model-small-it-0.22")
+model = Model(sys.argv[1])
 recognizer = KaldiRecognizer(model, 16000)
 
 mic = pyaudio.PyAudio()
