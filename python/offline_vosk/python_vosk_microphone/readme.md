@@ -12,8 +12,8 @@ The following code will use vosk for speech recognition
 ## requirements
 
 ```
-sudo apt install python3-pip
-sudo apt-get install portaudio19-dev python3-pyaudio
+sudo apt install python3-pip -y
+sudo apt-get install portaudio19-dev python3-pyaudio -y
 ```
 
 python dependencies

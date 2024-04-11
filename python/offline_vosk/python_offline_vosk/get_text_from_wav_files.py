@@ -11,17 +11,22 @@ import soundfile
 
 scriptLocation = os.path.dirname(os.path.realpath(__file__))
 
-model = Model(os.path.join(scriptLocation,"vosk-model-small-it-0.22"))
+# vosk-model-it-0.22
+# vosk-model-small-en-us-0.15
+model = Model(os.path.join(scriptLocation,sys.argv[3]))
 
 jpExPartial = parse('$.partial')
 jpExAll = parse('$.text')
 
 textsByClass = {}
+classAndExtraction = []
 
-for filepath in glob.iglob(sys.argv[1]+"/**/*.wav"):
-    print(filepath)
+for filepath in glob.iglob(sys.argv[1]+"/**/*.wav"):    
     wavFileName = os.path.basename(filepath)
     clazz = os.path.basename(os.path.dirname(filepath))
+    
+    print(clazz+" : "+wavFileName)
+    
     if clazz not in textsByClass:
       textsByClass[clazz] = []
 
@@ -53,6 +58,7 @@ for filepath in glob.iglob(sys.argv[1]+"/**/*.wav"):
         print(value)
         if value and value not in textsByClass[clazz]:
             textsByClass[clazz].append(value)
+            classAndExtraction.append(clazz+";"+value)
             #print(value)
     else:
         json_data = json.loads(rec.PartialResult())
@@ -61,10 +67,15 @@ for filepath in glob.iglob(sys.argv[1]+"/**/*.wav"):
         print(value)
         if value and value not in textsByClass[clazz]:
             textsByClass[clazz].append(value) 
+            classAndExtraction.append(clazz+";"+value)
             #print(value)
 
 #print(json.dumps(textsByClass, indent=4))
 print("completed")
 
-with open(sys.argv[1]+"_extracted_text.json", "w") as text_file:
+with open(sys.argv[2]+"/extracted_text.json", "w") as text_file:
     text_file.write(json.dumps(textsByClass))
+
+csvString = "\n".join(classAndExtraction)  
+with open(sys.argv[2]+"/extracted_text.csv", "w") as text_file:
+    text_file.write(csvString)

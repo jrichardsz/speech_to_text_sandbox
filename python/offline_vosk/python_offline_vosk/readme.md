@@ -47,3 +47,7 @@ You should need to read the file and write to another file before the detection.
 
 Audio file must be WAV format mono PCM.
 ffmpeg to convert
+
+## from wav
+
+python3 get_text_from_wav_files.py /home/computer/This/sentences/latin/oversampled /home/computer/This/sentences/latin
